@@ -1,4 +1,5 @@
 const questions = [
+//Array of question objects with choices and correct answerinex
   {
     question: "What does HTML stand for?",
     choices: [
@@ -28,14 +29,14 @@ const questions = [
     question: "Which of the following is a scripting language?",
     choices: ["HTML", "CSS", "JavaScript", "XML"],
     correctAnswer: 2,
-  }
+  }//add more questions
 ];
 
-let currentQuestion = 0;
-let score = 0;
-let timer;
-let timeLeft = 10;
-let userAnswers = [];
+let currentQuestion = 0;//tracks current question index
+let score = 0;//tracks the score
+let timer;//interval time variable
+let timeLeft = 10;//time limit for each question
+let userAnswers = [];//store the results given by user (correct/incorrect)
 
 const questionText = document.getElementById("question-text");
 const questionNumber = document.getElementById("question-number");
@@ -50,6 +51,7 @@ const summaryBox = document.getElementById("summary");
 const timerDisplay = document.getElementById("time-left");
 const progressBar = document.getElementById("progress-bar");
 
+//starts the countdown timer
 function startTimer() {
   clearInterval(timer);
   timeLeft = 10;
@@ -59,17 +61,20 @@ function startTimer() {
     timerDisplay.textContent = timeLeft;
     if (timeLeft <= 0) {
       clearInterval(timer);
-      autoNext();
+      autoNext();//movies to next question automatically
     }
   }, 1000);
 }
 
+//displays the current question and its choices
 function showQuestion() {
   resetState();
   const question = questions[currentQuestion];
   questionText.textContent = question.question;
   questionNumber.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
 
+
+  //create list items for each answer choice
   question.choices.forEach((choice, index) => {
     const li = document.createElement("li");
     li.textContent = choice;
@@ -78,14 +83,16 @@ function showQuestion() {
   });
 
   updateProgress();
-  startTimer();
+  startTimer();//start timer for new question
 }
 
+//handles answer selection and evaluates the correct answers
 function selectAnswer(element, selectedIndex) {
   clearInterval(timer);
   const correct = questions[currentQuestion].correctAnswer;
   const options = answerList.children;
 
+  //remove previous slection and disable clicking
   for (let i = 0; i < options.length; i++) {
     options[i].classList.remove("selected");
     options[i].removeEventListener("click", () => {});
@@ -102,39 +109,47 @@ function selectAnswer(element, selectedIndex) {
     userAnswers.push({ questionIndex: currentQuestion, correct: false });
   }
 
-  nextBtn.disabled = false;
+  nextBtn.disabled = false;//enables the next button after selection
 }
 
+
+//clears previous question data 
 function resetState() {
   nextBtn.disabled = true;
   answerList.innerHTML = "";
 }
 
+//updates progress bar width based on question index
 function updateProgress() {
   const progress = ((currentQuestion) / questions.length) * 100;
   progressBar.style.width = `${progress}%`;
 }
 
+//moves to next question if time runs out
 function autoNext() {
   userAnswers.push({ questionIndex: currentQuestion, correct: false });
   showNext();
 }
 
+//handles the logic for moving to the next question
 function showNext() {
   currentQuestion++;
   if (currentQuestion < questions.length) {
     showQuestion();
   } else {
-    showResults();
+    showResults();//if last question, show results
   }
 }
 
+
+//displays the final score and result summary
 function showResults() {
   quizBox.classList.add("hidden");
   resultBox.classList.remove("hidden");
   finalScore.textContent = `${score} / ${questions.length}`;
   progressBar.style.width = `100%`;
 
+  //shows summary of all questions and results
   summaryBox.innerHTML = userAnswers.map(answer => {
     const q = questions[answer.questionIndex];
     return `
@@ -146,6 +161,7 @@ function showResults() {
   }).join('');
 }
 
+//restarts the entire quiz state for restart
 function restartQuiz() {
   currentQuestion = 0;
   score = 0;
@@ -157,6 +173,7 @@ function restartQuiz() {
   showQuestion();
 }
 
+//event listeners
 nextBtn.addEventListener("click", () => {
   if (currentQuestion === questions.length - 1) {
     viewResultsBtn.style.display = "inline-block";
@@ -168,4 +185,5 @@ nextBtn.addEventListener("click", () => {
 viewResultsBtn.addEventListener("click", showResults);
 restartBtn.addEventListener("click", restartQuiz);
 
+//initial function call to load the first question
 showQuestion();
