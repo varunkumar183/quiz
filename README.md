@@ -4,7 +4,7 @@ A responsive, interactive quiz app built with HTML, CSS, and JavaScript that all
 
 ## Project Purpose
 
-This project was developed to:
+**This project was developed to:**
   Practice JavaScript DOM manipulation and event handling
   Understand arrays, objects, and conditional logic
   Build an engaging, user-friendly interface using only frontend technologies
@@ -13,7 +13,7 @@ This project was developed to:
 
   One question displayed at a time  
   Four answer choices per question  
-  Highlight correct/incorrect answers  
+  Highlight the seleccted answers  
   "Next" and "View Results" buttons  
   Score calculation and results summary  
   "Restart Quiz" functionality  
