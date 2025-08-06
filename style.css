@@ -44,11 +44,11 @@ ul#answer-list li.selected {
 }
 
 ul#answer-list li.correct {
-  background-color: #c8f7c5;
+  background-color: #f4f4f4;
 }
 
 ul#answer-list li.incorrect {
-  background-color: #f7c5c5;
+  background-color: #f4f4f4;
 }
 
 button {
@@ -98,4 +98,5 @@ button:disabled {
 
 #summary {
   margin-top: 20px;
+  padding:15px;
 }

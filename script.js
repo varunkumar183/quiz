@@ -86,30 +86,31 @@ function showQuestion() {
   startTimer();//start timer for new question
 }
 
-//handles answer selection and evaluates the correct answers
+// Handles answer selection and evaluates correctness
 function selectAnswer(element, selectedIndex) {
-  clearInterval(timer);
+  clearInterval(timer); // Stop the timer
   const correct = questions[currentQuestion].correctAnswer;
   const options = answerList.children;
 
-  //remove previous slection and disable clicking
+  // Remove previous selection and disable clicking
   for (let i = 0; i < options.length; i++) {
     options[i].classList.remove("selected");
     options[i].removeEventListener("click", () => {});
   }
 
   element.classList.add("selected");
+
   if (selectedIndex === correct) {
     element.classList.add("correct");
     score++;
     userAnswers.push({ questionIndex: currentQuestion, correct: true });
   } else {
     element.classList.add("incorrect");
-    options[correct].classList.add("correct");
+    
     userAnswers.push({ questionIndex: currentQuestion, correct: false });
   }
 
-  nextBtn.disabled = false;//enables the next button after selection
+  nextBtn.disabled = false; // Enable Next button after selection
 }
 
 
@@ -149,13 +150,17 @@ function showResults() {
   finalScore.textContent = `${score} / ${questions.length}`;
   progressBar.style.width = `100%`;
 
-  //shows summary of all questions and results
+  // Show summary of all questions, user answers, and correct answers
   summaryBox.innerHTML = userAnswers.map(answer => {
     const q = questions[answer.questionIndex];
+    const correctAnswerText = q.choices[q.correctAnswer];
+    const userAnswerText = answer.correct? correctAnswerText : "Incorrect";
+
     return `
       <div class="${answer.correct ? 'correct' : 'incorrect'}">
-        <p><strong>${q.question}</strong></p>
-        <p>Your answer: ${answer.correct ? q.choices[q.correctAnswer] : "Incorrect"}</p>
+        <p><strong>Q${answer.questionIndex + 1}: ${q.question}</strong></p>
+        <p>Your answer: ${userAnswerText}</p>
+        <p>Correct answer: <strong>${correctAnswerText}</strong></p>
       </div>
     `;
   }).join('');
